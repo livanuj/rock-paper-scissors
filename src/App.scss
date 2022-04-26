@@ -1,0 +1,103 @@
+.App {
+  text-align: center;
+  /* width: 1192px; */
+  width: 60%;
+  margin: auto;
+}
+
+.selection-div {
+  position: relative;
+
+  .selection-choices-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    &.selected {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  
+    .play-icon {
+      cursor: pointer;
+      margin-right: 2rem;
+      border-radius: 60%;
+      &:hover{
+        background-color: #c9e0ec;
+        transition-duration: 1.5s;
+        cursor: pointer;
+        -webkit-animation: tada .5s;
+          animation: tada .5s;
+      }
+    }
+  
+    .icon-image {
+      &.icon-rock {
+        transform: scaleX(-1);
+      }
+    }
+  }
+
+  .next-button {
+    position: absolute;
+    top: 50%;
+    left: 45%;
+    opacity: 1;
+    z-index: 1;
+  }
+}
+
+.playing-area-div {
+  height: 500px;
+}
+
+.playing-area-div {
+  display: flex;
+  justify-content: space-around;
+}
+
+/* .App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+} */
+/* 
+.button-div {
+  display: flex;
+} */
+
+@keyframes tada {
+  0% {transform: scale(1);} 
+  10%, 20% {transform: scale(0.9) rotate(-3deg);} 
+  30%, 50%, 70%, 90% {transform: scale(1.1) rotate(3deg);} 
+  40%, 60%, 80% {transform: scale(1.1) rotate(-3deg);} 
+  100% {transform: scale(1) rotate(0);} 
+}
