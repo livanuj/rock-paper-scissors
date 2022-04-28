@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  /* width: 1192px; */
+  max-width: 792px;
   width: 60%;
   margin: auto;
 }
@@ -31,18 +31,25 @@
     }
   
     .icon-image {
-      &.icon-rock {
-        transform: scaleX(-1);
-      }
+      transform: rotate(-20deg);
     }
   }
 
-  .next-button {
+  .next-button-div {
     position: absolute;
     top: 50%;
-    left: 45%;
+    left: 42%;
     opacity: 1;
     z-index: 1;
+    .next-round-button {
+      color: white;
+      background-color: #0ebd7d !important;
+      border: none;
+      border-radius: 5px;
+      font-size: 17px;
+      padding: 6px 18px;
+      box-shadow: #0c7150 3px 4px 6px 0px;
+    }
   }
 }
 
@@ -53,6 +60,33 @@
 .playing-area-div {
   display: flex;
   justify-content: space-around;
+}
+
+.shake-hand-image {
+  padding-top: 95px;
+  margin-bottom: 60px;
+  &.right {
+    transform: scaleX(-1);
+    -webkit-animation: shake-right 1s;
+      animation: shake-right 1s;
+  }
+  &.left {
+    -webkit-animation: shake-left 1s;
+    animation: shake-left 1s;
+  }
+}
+
+.chosen-hand-image {
+  padding-top: 95px;
+  margin-bottom: 60px;
+  &.right {
+    transform: scaleX(-1);
+  }
+}
+
+.winner-div {
+  position: absolute;
+  top: 425px;
 }
 
 /* .App-logo {
@@ -100,4 +134,18 @@
   30%, 50%, 70%, 90% {transform: scale(1.1) rotate(3deg);} 
   40%, 60%, 80% {transform: scale(1.1) rotate(-3deg);} 
   100% {transform: scale(1) rotate(0);} 
+}
+
+@keyframes shake-left {
+  10%, 90% {transform: translate3d(0, -10px, 0);}
+  20%, 80% {transform: translate3d(0, 20px, 0);}
+  30%, 50%, 70% {transform: translate3d(0, -40px, 0);}
+  40%, 60% {transform: translate3d(0, 40px, 0);}
+}
+
+@keyframes shake-right {
+  10%, 90% {transform: translate3d(0, -10px, 0) scaleX(-1);}
+  20%, 80% {transform: translate3d(0, 20px, 0) scaleX(-1);}
+  30%, 50%, 70% {transform: translate3d(0, -40px, 0) scaleX(-1);}
+  40%, 60% {transform: translate3d(0, 40px, 0) scaleX(-1);}
 }

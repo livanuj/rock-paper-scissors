@@ -1,7 +1,7 @@
 export const playItems = [
   {
     item: 'Rock',
-    wins: ['Scissors'],
+    wins: ['Scissor'],
     filePath: 'rock.png',
   }, { 
     item: 'Paper', 

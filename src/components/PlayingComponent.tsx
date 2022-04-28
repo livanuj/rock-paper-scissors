@@ -19,7 +19,7 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
         onClick={() => setPlayerChoice(item)}
       >
         <img
-          className={`icon-image icon-${item.toLowerCase()}`}
+          className="icon-image"
           src={require(`../assets/${filePath}`)}
           alt={item}
           height="100"
@@ -34,8 +34,13 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
     if (playerChoice === "") return;
 
     return (
-      <div className="next-button">
-        <button onClick={() => setPlayerChoice("")}>Next Round</button>
+      <div className="next-button-div">
+        <button
+          className="next-round-button"
+          onClick={() => setPlayerChoice("")}
+        >
+          Next Round
+        </button>
       </div>
     )
   }
@@ -56,6 +61,3 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
 }
 
 export default PlayingComponent;
-
-// const PlayingComponent: React.FC<{}> = () => {
-// }
