@@ -1,5 +1,6 @@
 import React from "react";
 import { playItems } from "../constants/playItems";
+import { randomComputerChoice } from "../helper/gamelogic";
 import PlayingAnimation from "./PlayingAnimation";
 
 interface PlayingComponentProps {
@@ -8,6 +9,18 @@ interface PlayingComponentProps {
 
 const PlayingComponent = ({ player }: PlayingComponentProps) => {
   const [playerChoice, setPlayerChoice] = React.useState<string>("");
+  const [computerChoice, setComputerChoice] = React.useState<string>("");
+
+  const handleNextRoundClick = () => {
+    setPlayerChoice("")
+    setComputerChoice("")
+  }
+
+  const handlePlayerChoiceClick = (choice: string) => {
+    const computerChoice = randomComputerChoice();
+    setComputerChoice(computerChoice.item);
+    setPlayerChoice(choice);
+  }
 
   const renderIcon = (index: number, playItem: any) => {
     const { item, filePath } = playItem;
@@ -16,7 +29,7 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
       <div
         key={index}
         className="play-icon"
-        onClick={() => setPlayerChoice(item)}
+        onClick={() => handlePlayerChoiceClick(item)}
       >
         <img
           className="icon-image"
@@ -37,7 +50,7 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
       <div className="next-button-div">
         <button
           className="next-round-button"
-          onClick={() => setPlayerChoice("")}
+          onClick={handleNextRoundClick}
         >
           Next Round
         </button>
@@ -48,7 +61,10 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
   return (
     <div>
       <h1>Rock Paper Sissor</h1>
-      <PlayingAnimation playerChoice={playerChoice} />
+      <PlayingAnimation
+        playerChoice={playerChoice}
+        computerChoice={computerChoice}
+      />
       <div className="selection-div">
         <span><h3>Choose Wisely</h3></span>
         {renderNextGameButton()}

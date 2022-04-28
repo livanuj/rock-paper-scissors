@@ -1,17 +1,17 @@
 import React from "react";
 import { playItems } from "../constants/playItems";
-import { getWinner, randomComputerChoice } from "../helper/gamelogic";
+import { getWinner } from "../helper/gamelogic";
 
 interface PlayingAnimationProps {
   playerChoice: string,
+  computerChoice: string,
 }
 
 interface PlayerChoiceObject {
   filePath: string,
 }
 
-const PlayingAnimation = ({ playerChoice }: PlayingAnimationProps) => {
-  const [computerChoice, setComputerChoice] = React.useState<string>("");
+const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProps) => {
   const [shakeHand, setShakeHand] = React.useState<boolean>(false);
   const [winner, setWinner] = React.useState<string>("");
 
@@ -19,12 +19,8 @@ const PlayingAnimation = ({ playerChoice }: PlayingAnimationProps) => {
     if (playerChoice === "") return;
 
     setShakeHand(true)
-    const computerChoice = randomComputerChoice();
-    setComputerChoice(computerChoice.item);
-    const winner = getWinner(playerChoice, computerChoice.item);
-    setTimeout(() => {
-      setShakeHand(false)
-    }, 1000);
+    const winner = getWinner(playerChoice, computerChoice);
+    setTimeout(() => setShakeHand(false), 1000);
     setWinner(winner);
   }, [playerChoice]);
 
@@ -48,13 +44,13 @@ const PlayingAnimation = ({ playerChoice }: PlayingAnimationProps) => {
   }
 
   const renderPlayerChoice = () => {
-    if (playerChoice === "" || shakeHand) return renderShakeHand('left');
+    if (shakeHand) return renderShakeHand('left');
 
     const { filePath }: PlayerChoiceObject = findChosenObject(playerChoice);
     return (
       <div>
         <img
-          className="chosen-hand-image left"
+          className={`chosen-hand-image left ${winner === "Player" ? "winner" : ""}`}
           src={require(`../assets/${filePath}`)}
           height="200"
           width="200"
@@ -64,13 +60,13 @@ const PlayingAnimation = ({ playerChoice }: PlayingAnimationProps) => {
   }
 
   const renderComputerChoice = () => {
-    if (playerChoice === "" || shakeHand) return renderShakeHand('right');
+    if (shakeHand) return renderShakeHand('right');
 
     const { filePath }: PlayerChoiceObject = findChosenObject(computerChoice);
     return (
       <div>
         <img
-          className="chosen-hand-image right"
+          className={`chosen-hand-image right ${winner === "Computer" ? "winner" : ""}`}
           src={require(`../assets/${filePath}`)}
           height="200"
           width="200"
