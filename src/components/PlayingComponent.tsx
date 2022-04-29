@@ -1,5 +1,6 @@
 import React from "react";
 import { playItems } from "../constants/playItems";
+import { ScoreContext, ScoreContextType } from "../context/ScoreContext";
 import { randomComputerChoice } from "../helper/gamelogic";
 import PlayingAnimation from "./PlayingAnimation";
 
@@ -14,6 +15,7 @@ interface ChoiceProps {
 }
 
 const PlayingComponent = ({ player }: PlayingComponentProps) => {
+  const { playerScore, computerScore } = React.useContext(ScoreContext) as ScoreContextType;
   const [playerChoice, setPlayerChoice] = React.useState<ChoiceProps | null>(null);
   const [computerChoice, setComputerChoice] = React.useState<ChoiceProps | null>(null);
 
@@ -64,9 +66,24 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
     )
   }
 
+  const renderScore = () => {
+    return (
+      <div>
+        <span style={{ color: playerScore >= computerScore ? 'green' : 'red' }}>
+          Player {playerScore}
+        </span>
+        &nbsp; : &nbsp;
+        <span style={{ color: computerScore >= playerScore ? 'green' : 'red' }}>
+          {computerScore} Computer
+        </span>
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Rock Paper Sissor</h1>
+      {renderScore()}
       <PlayingAnimation
         playerChoice={playerChoice!}
         computerChoice={computerChoice!}

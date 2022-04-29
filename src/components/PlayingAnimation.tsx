@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { playItems } from "../constants/playItems";
+import { ScoreContext, ScoreContextType } from "../context/ScoreContext";
 import { getWinner } from "../helper/gamelogic";
 
 interface PlayerChoiceProps {
@@ -14,6 +15,7 @@ interface PlayingAnimationProps {
 
 
 const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProps) => {
+  const { updateScore } = useContext(ScoreContext) as ScoreContextType;
   const [shakeHand, setShakeHand] = React.useState<boolean>(false);
   const [winner, setWinner] = React.useState<string>("");
 
@@ -22,8 +24,11 @@ const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProp
 
     setShakeHand(true)
     const winner = getWinner(playerChoice, computerChoice);
-    setTimeout(() => setShakeHand(false), 1000);
-    setWinner(winner);
+    setTimeout(() => {
+      setShakeHand(false)
+      updateScore(winner)
+      setWinner(winner);
+    }, 1000);
   }, [playerChoice]);
 
   const renderShakeHand = (handSide: string) => {

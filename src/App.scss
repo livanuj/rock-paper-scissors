@@ -13,7 +13,7 @@
     justify-content: center;
     align-items: center;
     &.selected {
-      opacity: 0.5;
+      opacity: 0.1;
       pointer-events: none;
     }
   
@@ -54,7 +54,7 @@
 }
 
 .playing-area-div {
-  height: 500px;
+  height: 420px;
 }
 
 .playing-area-div {
@@ -63,7 +63,7 @@
 }
 
 .shake-hand-image {
-  padding-top: 95px;
+  padding-top: 65px;
   margin-bottom: 60px;
   &.right {
     transform: scaleX(-1);
@@ -77,7 +77,7 @@
 }
 
 .chosen-hand-image {
-  padding-top: 95px;
+  padding-top: 65px;
   margin-bottom: 60px;
   &.right {
     transform: scaleX(-1);
@@ -101,10 +101,6 @@
   top: 425px;
 }
 
-@keyframes winner-left {
-  50%, 90% {transform: translate3d(80%, 0, 0);}
-}
-
 @keyframes tada {
   0% {transform: scale(1);} 
   10%, 20% {transform: scale(0.9) rotate(-3deg);} 
@@ -125,6 +121,11 @@
   20%, 80% {transform: translate3d(0, 20px, 0) scaleX(-1);}
   30%, 50%, 70% {transform: translate3d(0, -40px, 0) scaleX(-1);}
   40%, 60% {transform: translate3d(0, 40px, 0) scaleX(-1);}
+}
+
+
+@keyframes winner-left {
+  50%, 90% {transform: translate3d(80%, 0, 0);}
 }
 
 @keyframes winner-right {
