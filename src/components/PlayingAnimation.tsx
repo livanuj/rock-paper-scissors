@@ -2,31 +2,29 @@ import React from "react";
 import { playItems } from "../constants/playItems";
 import { getWinner } from "../helper/gamelogic";
 
-interface PlayingAnimationProps {
-  playerChoice: string,
-  computerChoice: string,
-}
-
-interface PlayerChoiceObject {
+interface PlayerChoiceProps {
+  item: string,
+  wins: string[],
   filePath: string,
 }
+interface PlayingAnimationProps {
+  playerChoice?: PlayerChoiceProps,
+  computerChoice?: PlayerChoiceProps,
+}
+
 
 const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProps) => {
   const [shakeHand, setShakeHand] = React.useState<boolean>(false);
   const [winner, setWinner] = React.useState<string>("");
 
   React.useEffect(() => {
-    if (playerChoice === "") return;
+    if (!playerChoice || !computerChoice) return;
 
     setShakeHand(true)
     const winner = getWinner(playerChoice, computerChoice);
     setTimeout(() => setShakeHand(false), 1000);
     setWinner(winner);
   }, [playerChoice]);
-
-  const findChosenObject = (choice: string) => {
-    return playItems.find(item => item.item === choice) || playItems[0];
-  }
 
   const renderShakeHand = (handSide: string) => {
     if (!shakeHand) return
@@ -45,8 +43,8 @@ const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProp
 
   const renderPlayerChoice = () => {
     if (shakeHand) return renderShakeHand('left');
+    const filePath = playerChoice?.filePath || playItems[0].filePath;
 
-    const { filePath }: PlayerChoiceObject = findChosenObject(playerChoice);
     return (
       <div>
         <img
@@ -61,8 +59,8 @@ const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProp
 
   const renderComputerChoice = () => {
     if (shakeHand) return renderShakeHand('right');
+    const filePath = computerChoice?.filePath || playItems[0].filePath;
 
-    const { filePath }: PlayerChoiceObject = findChosenObject(computerChoice);
     return (
       <div>
         <img
@@ -76,7 +74,7 @@ const PlayingAnimation = ({ playerChoice, computerChoice }: PlayingAnimationProp
   }
 
   const renderWinner = () => {
-    if (playerChoice === "" || shakeHand) return;
+    if (!playerChoice || shakeHand) return;
     let winnerText = winner === "Tie" ? "It's a tie" : `${winner} wins`;
 
     return (

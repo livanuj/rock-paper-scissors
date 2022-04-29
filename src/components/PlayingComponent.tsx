@@ -7,18 +7,24 @@ interface PlayingComponentProps {
   player?: string,
 }
 
+interface ChoiceProps {
+  item: string,
+  wins: string[],
+  filePath: string,
+}
+
 const PlayingComponent = ({ player }: PlayingComponentProps) => {
-  const [playerChoice, setPlayerChoice] = React.useState<string>("");
-  const [computerChoice, setComputerChoice] = React.useState<string>("");
+  const [playerChoice, setPlayerChoice] = React.useState<ChoiceProps | null>(null);
+  const [computerChoice, setComputerChoice] = React.useState<ChoiceProps | null>(null);
 
   const handleNextRoundClick = () => {
-    setPlayerChoice("")
-    setComputerChoice("")
+    setPlayerChoice(null);
+    setComputerChoice(null)
   }
 
-  const handlePlayerChoiceClick = (choice: string) => {
+  const handlePlayerChoiceClick = (choice: ChoiceProps) => {
     const computerChoice = randomComputerChoice();
-    setComputerChoice(computerChoice.item);
+    setComputerChoice(computerChoice);
     setPlayerChoice(choice);
   }
 
@@ -29,7 +35,7 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
       <div
         key={index}
         className="play-icon"
-        onClick={() => handlePlayerChoiceClick(item)}
+        onClick={() => handlePlayerChoiceClick(playItem)}
       >
         <img
           className="icon-image"
@@ -44,7 +50,7 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
   }
 
   const renderNextGameButton = () => {
-    if (playerChoice === "") return;
+    if (!playerChoice)  return;
 
     return (
       <div className="next-button-div">
@@ -62,13 +68,13 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
     <div>
       <h1>Rock Paper Sissor</h1>
       <PlayingAnimation
-        playerChoice={playerChoice}
-        computerChoice={computerChoice}
+        playerChoice={playerChoice!}
+        computerChoice={computerChoice!}
       />
       <div className="selection-div">
         <span><h3>Choose Wisely</h3></span>
         {renderNextGameButton()}
-        <div className={`selection-choices-div ${playerChoice !== "" ? "selected" : ""}`}>
+        <div className={`selection-choices-div ${!!playerChoice ? "selected" : ""}`}>
           { playItems.map((playItem, index) => renderIcon(index, playItem)) }
         </div>
       </div>
