@@ -82,7 +82,6 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
 
   return (
     <div>
-      <h1>Rock Paper Sissor</h1>
       {renderScore()}
       <PlayingAnimation
         playerChoice={playerChoice!}

@@ -5,6 +5,17 @@
   margin: auto;
 }
 
+.home-screen-menu {
+  margin-top: 200px;
+}
+
+.clickable-span {
+  cursor: pointer;
+  &:hover {
+    color: green;
+  }
+}
+
 .selection-div {
   position: relative;
 

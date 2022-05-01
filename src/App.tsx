@@ -1,15 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
-import PlayingComponent from './components/PlayingComponent';
 import ScoreContextProvider from './context/ScoreContext';
+import HomeScreen from './components/HomeScreen';
+import Cookies from 'js-cookie';
 
 function App() {
+  const playerScore = parseInt(Cookies.get('player-score') || '');
+  const computerScore = parseInt(Cookies.get('computer-score') || '');
 
   return (
-    <ScoreContextProvider>
+    <ScoreContextProvider playerScoreProp={playerScore} computerScoreProp={computerScore}>
       <div className='App'>
-        <PlayingComponent />
+        <HomeScreen />
       </div>
     </ScoreContextProvider>
   );
