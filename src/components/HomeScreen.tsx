@@ -1,30 +1,63 @@
 import React from 'react';
+import { playerNames } from '../constants/playItems';
 import { ScoreContext, ScoreContextType } from '../context/ScoreContext';
 import PlayingComponent from './PlayingComponent';
 
 const HomeScreen = () => {
   const {
-    playerScore,
-    computerScore,
-    resetScore
+    player1Score,
+    player2Score,
+    gamingMode,
+    resetScore,
+    handleGameMode,
   } = React.useContext(ScoreContext) as ScoreContextType;
-  const [showHomePage, setShowHomePage] = React.useState<boolean>(true)
+  const [showHomePage, setShowHomePage] = React.useState<boolean>(true);
+  const [startNewGame, setStartNewGame] = React.useState<boolean>(false);
 
   const handleNewGameClick = () => {
     resetScore();
     setShowHomePage(false);
+    setStartNewGame(true);
+    handleGameMode('playerVsComp')
+  }
+
+  const handleComputerVComputer = () => {
+    setStartNewGame(false)
+    handleGameMode('compVsComp')
   }
 
   const renderContinueMenu = () => {
-    if (!playerScore && !computerScore) return null;
+    if (!player1Score && !player2Score) return null;
 
     return (
       <span
         className='clickable-span'
         onClick={() => setShowHomePage(false)}
       >
-        <h2>Continue Game</h2>
+        <h2 style={{ marginBottom: 1 }}>Continue Game</h2>
+        <span className='score-info'>
+          ({playerNames[gamingMode].player1} - {player1Score} : {player2Score} - {playerNames[gamingMode].player2})
+        </span>
       </span>
+    );
+  }
+
+  const renderChoosePlayer = () => {
+    return (
+      <div className='home-screen-menu'>
+        <span
+          className='clickable-span'
+          onClick={() => setStartNewGame(false)}
+        >
+          <h2>Player Vs Computer</h2>
+        </span>
+        <span
+          className='clickable-span'
+          onClick={handleComputerVComputer}
+        >
+          <h2>Computer Vs Computer</h2>
+        </span>
+      </div>
     );
   }
 
@@ -42,6 +75,13 @@ const HomeScreen = () => {
     );
   }
 
+  const routeLogic = () => {
+    if (showHomePage) return renderHomeScreen();
+
+    if (startNewGame) return renderChoosePlayer();
+
+    return <PlayingComponent />
+  }
 
   return (
     <div>
@@ -51,7 +91,7 @@ const HomeScreen = () => {
       >
         <h1>Rock Paper Sissor</h1>
       </span>
-      { showHomePage ? renderHomeScreen() : <PlayingComponent /> }
+      {routeLogic()}
     </div>
   )
 }

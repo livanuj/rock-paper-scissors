@@ -14,6 +14,24 @@
   &:hover {
     color: green;
   }
+  .score-info {
+    font-size: 0.8em;
+  }
+}
+
+.score-div {
+  display: flex;
+  align-items: center;
+  margin: auto;
+  width: 30%;
+  justify-content: space-between;
+  .score-name {
+    display: flex;
+    flex-direction: column;
+  }
+  .score-number {
+    font-size: 2rem;
+  }
 }
 
 .selection-div {
@@ -29,9 +47,12 @@
     }
   
     .play-icon {
+      display: flex;
+      flex-direction: column;
       cursor: pointer;
       margin-right: 2rem;
-      border-radius: 60%;
+      border-radius: 50%;
+      padding: 5px;
       &:hover{
         background-color: #c9e0ec;
         transition-duration: 1.5s;
@@ -60,6 +81,10 @@
       font-size: 17px;
       padding: 6px 18px;
       box-shadow: #0c7150 3px 4px 6px 0px;
+      &:disabled {
+        background-color: #808080 !important;
+        box-shadow: #808080 3px 4px 6px 0px;
+      }
     }
   }
 }
@@ -109,7 +134,7 @@
 
 .winner-div {
   position: absolute;
-  top: 425px;
+  top: 240px;
 }
 
 @keyframes tada {

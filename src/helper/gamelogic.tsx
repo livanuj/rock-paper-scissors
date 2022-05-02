@@ -12,12 +12,12 @@ export const randomComputerChoice = (): ChoicesProps => {
   return playItems[random];
 }
 
-export const getWinner = (playerChoice: ChoicesProps, computerChoice: ChoicesProps): string => {
-  if (playerChoice.item === computerChoice.item)
-    return 'Tie';
+export const getWinner = (player1Choice: ChoicesProps, player2Choice: ChoicesProps): string => {
+  if (player1Choice.item === player2Choice.item)
+    return 'tie';
 
-  if (playerChoice.wins.indexOf(computerChoice.item) > -1)
-    return 'Player';
+  if (player1Choice.wins.indexOf(player2Choice.item) > -1)
+    return 'player1';
 
-  return 'Computer';
+  return 'player2';
 }

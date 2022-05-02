@@ -1,12 +1,8 @@
 import React from "react";
-import { playItems } from "../constants/playItems";
+import { playerNames, playItems } from "../constants/playItems";
 import { ScoreContext, ScoreContextType } from "../context/ScoreContext";
 import { randomComputerChoice } from "../helper/gamelogic";
 import PlayingAnimation from "./PlayingAnimation";
-
-interface PlayingComponentProps {
-  player?: string,
-}
 
 interface ChoiceProps {
   item: string,
@@ -14,20 +10,38 @@ interface ChoiceProps {
   filePath: string,
 }
 
-const PlayingComponent = ({ player }: PlayingComponentProps) => {
-  const { playerScore, computerScore } = React.useContext(ScoreContext) as ScoreContextType;
-  const [playerChoice, setPlayerChoice] = React.useState<ChoiceProps | null>(null);
-  const [computerChoice, setComputerChoice] = React.useState<ChoiceProps | null>(null);
+const PlayingComponent = () => {
+  const { player1Score, player2Score, gamingMode } = React.useContext(ScoreContext) as ScoreContextType;
+  const [player1Choice, setPlayer1Choice] = React.useState<ChoiceProps | null>(null);
+  const [player2Choice, setPlayer2Choice] = React.useState<ChoiceProps | null>(null);
+  const [disableBtn, setDisableBtn] = React.useState<boolean>(false);
+
+  React.useEffect(() => {
+    if (gamingMode === 'compVsComp' && !player1Choice && !player2Choice) {
+      setPlayer1Choice(randomComputerChoice());
+      setPlayer2Choice(randomComputerChoice());
+    }
+  }, [player1Choice, player2Choice])
 
   const handleNextRoundClick = () => {
-    setPlayerChoice(null);
-    setComputerChoice(null)
+    setDisableBtn(true);
+    setPlayer1Choice(null);
+    setPlayer2Choice(null);
+    setTimeout(() => {
+      setDisableBtn(false)
+    }, 2000)
   }
 
   const handlePlayerChoiceClick = (choice: ChoiceProps) => {
     const computerChoice = randomComputerChoice();
-    setComputerChoice(computerChoice);
-    setPlayerChoice(choice);
+    setPlayer2Choice(computerChoice);
+    setPlayer1Choice(choice);
+  }
+
+  const showNextButton = () => {
+    if (gamingMode === 'compVsComp') return true
+
+    return !!player1Choice
   }
 
   const renderIcon = (index: number, playItem: any) => {
@@ -43,8 +57,8 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
           className="icon-image"
           src={require(`../assets/${filePath}`)}
           alt={item}
-          height="100"
-          width={`${300 / playItems.length}%`}
+          height="80px"
+          width="80px"
         />
         <span>{item}</span>
       </div>
@@ -52,13 +66,14 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
   }
 
   const renderNextGameButton = () => {
-    if (!playerChoice)  return;
+    if (!showNextButton())  return;
 
     return (
       <div className="next-button-div">
         <button
           className="next-round-button"
           onClick={handleNextRoundClick}
+          disabled={disableBtn}
         >
           Next Round
         </button>
@@ -68,14 +83,20 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
 
   const renderScore = () => {
     return (
-      <div>
-        <span style={{ color: playerScore >= computerScore ? 'green' : 'red' }}>
-          Player {playerScore}
-        </span>
-        &nbsp; : &nbsp;
-        <span style={{ color: computerScore >= playerScore ? 'green' : 'red' }}>
-          {computerScore} Computer
-        </span>
+      <div className="score-div">
+        <div className="score-name" style={{ color: player1Score >= player2Score ? 'green' : 'red' }}>
+          <div className="score-player-name">
+            <p>{playerNames[gamingMode].player1}</p>
+          </div>
+          <span className="score-number">{player1Score}</span>
+        </div>
+        <div>:</div>
+        <div style={{ color: player2Score >= player1Score ? 'green' : 'red' }}>
+          <div>
+            <p>{playerNames[gamingMode].player2}</p>
+          </div>
+          <span className="score-number">{player2Score}</span>
+        </div>
       </div>
     )
   }
@@ -84,13 +105,13 @@ const PlayingComponent = ({ player }: PlayingComponentProps) => {
     <div>
       {renderScore()}
       <PlayingAnimation
-        playerChoice={playerChoice!}
-        computerChoice={computerChoice!}
+        player1Choice={player1Choice!}
+        player2Choice={player2Choice!}
       />
       <div className="selection-div">
         <span><h3>Choose Wisely</h3></span>
         {renderNextGameButton()}
-        <div className={`selection-choices-div ${!!playerChoice ? "selected" : ""}`}>
+        <div className={`selection-choices-div ${showNextButton() ? "selected" : ""}`}>
           { playItems.map((playItem, index) => renderIcon(index, playItem)) }
         </div>
       </div>
