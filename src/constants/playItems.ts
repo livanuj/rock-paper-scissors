@@ -18,23 +18,36 @@ export const playItems:PlayItem[] = [
     item: 'Rock',
     wins: ['Scissor'],
     filePath: 'rock.png',
-  }, { 
-    item: 'Paper', 
+  }, {
+    item: 'Paper',
     wins: ['Rock'],
     filePath: 'paper.png',
-  }, { 
+  }, {
     item: 'Scissor',
     wins: ['Paper'],
     filePath: 'scissor.png',
-  // }, {
-  //   item: 'TEST',
-  //   wins: ['TEST'],
-  //   filePath: 'logo.svg',
-  // }, {
-  //   item: 'TEST',
-  //   wins: ['TEST'],
-  //   filePath: 'logo.svg',
   }
+  // {
+  //   item: 'Rock',
+  //   wins: ['Scissors', 'Lizard'],
+  //   filePath: 'rock.png',
+  // }, { 
+  //   item: 'Paper',
+  //   wins: ['Rock', 'Spock'],
+  //   filePath: 'paper.png',
+  // }, { 
+  //   item: 'Scissor',
+  //   wins: ['Paper', 'Lizard'],
+  //   filePath: 'scissor.png',
+  // }, {
+  //   item: 'Lizard',
+  //   wins: ['Spock', 'Paper'],
+  //   filePath: 'logo.svg',
+  // }, {
+  //   item: 'Spock',
+  //   wins: ['Rock', 'Scissor'],
+  //   filePath: 'logo.svg',
+  // }
 ]
 
 export const playerNames:PlayerName = {
