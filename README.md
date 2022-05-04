@@ -26,7 +26,12 @@ to install the packages. This might take few minutes.
 
 `yarn start`
 
-Game will automatically open in the browser.  If not, open `localhost:3000` 
+Game will automatically open in the browser.  If not, open `localhost:3000`
+
+## to bundle the app
+run `yarn build` to bundle the app
+
+`serve -s build` to run the bundled app.
 
 # Game Details
 
