@@ -5,7 +5,6 @@ import PlayingComponent from './PlayingComponent';
 
 const HomeScreen = () => {
   const {
-    playItems,
     player1Score,
     player2Score,
     gamingMode,
@@ -79,7 +78,6 @@ const HomeScreen = () => {
   }
 
   const routeLogic = () => {
-    if (playItems.length < 1) return <div><h1>Loading...</h1></div>
 
     if (showHomePage) return renderHomeScreen();
 

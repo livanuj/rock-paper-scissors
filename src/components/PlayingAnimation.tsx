@@ -7,7 +7,7 @@ interface PlayingAnimationProps {
 }
 
 const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
-  const { player1Choice, player2Choice, gamingMode, winner } = useContext(ScoreContext) as ScoreContextType;
+  const { playItems, player1Choice, player2Choice, gamingMode, winner } = useContext(ScoreContext) as ScoreContextType;
 
   const renderShakeHand = (handSide: string) => {
     if (!startAnimation) return
@@ -28,7 +28,7 @@ const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
   const renderPlayerChoice = () => {
     if (startAnimation) return renderShakeHand('left');
 
-    const filePath = player1Choice?.filePath || "logo.svg";
+    const filePath = player1Choice?.filePath || playItems[0]?.filePath || "logo.svg";
 
     return (
       <div>
@@ -46,7 +46,7 @@ const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
   const renderComputerChoice = () => {
     if (startAnimation) return renderShakeHand('right');
 
-    const filePath = player2Choice?.filePath || "logo.svg";
+    const filePath = player2Choice?.filePath || playItems[0]?.filePath || "logo.svg";
 
     return (
       <div>
