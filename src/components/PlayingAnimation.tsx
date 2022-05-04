@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { Player, playerNames } from "../constants/playItems";
 import { ScoreContext, ScoreContextType } from "../context/ScoreContext";
 
@@ -7,7 +7,7 @@ interface PlayingAnimationProps {
 }
 
 const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
-  const { playItems, player1Choice, player2Choice, gamingMode, winner } = useContext(ScoreContext) as ScoreContextType;
+  const { player1Choice, player2Choice, gamingMode, winner } = useContext(ScoreContext) as ScoreContextType;
 
   const renderShakeHand = (handSide: string) => {
     if (!startAnimation) return
