@@ -18,12 +18,11 @@ const HomeScreen = () => {
     resetScore();
     setShowHomePage(false);
     setStartNewGame(true);
-    handleGameMode('playerVsComp')
   }
 
-  const handleComputerVComputer = () => {
+  const handleGameModeClick = (gameMode: string): void => {
     setStartNewGame(false)
-    handleGameMode('compVsComp')
+    handleGameMode(gameMode)
   }
 
   const renderContinueMenu = () => {
@@ -47,13 +46,13 @@ const HomeScreen = () => {
       <div className='home-screen-menu'>
         <span
           className='clickable-span'
-          onClick={() => setStartNewGame(false)}
+          onClick={() => handleGameModeClick('playerVsComp')}
         >
           <h2>Player Vs Computer</h2>
         </span>
         <span
           className='clickable-span'
-          onClick={handleComputerVComputer}
+          onClick={() => handleGameModeClick('compVsComp')}
         >
           <h2>Computer Vs Computer</h2>
         </span>

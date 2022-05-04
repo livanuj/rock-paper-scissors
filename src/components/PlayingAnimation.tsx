@@ -1,44 +1,23 @@
 import React, { useContext } from "react";
-import { player, playerNames, playItems } from "../constants/playItems";
+import { Player, playerNames } from "../constants/playItems";
 import { ScoreContext, ScoreContextType } from "../context/ScoreContext";
-import { getWinner } from "../helper/gamelogic";
 
-interface PlayerChoiceProps {
-  item: string,
-  wins: string[],
-  filePath: string,
-}
 interface PlayingAnimationProps {
-  player1Choice?: PlayerChoiceProps,
-  player2Choice?: PlayerChoiceProps,
+  startAnimation: boolean
 }
 
-
-const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProps) => {
-  const { updateScore, gamingMode } = useContext(ScoreContext) as ScoreContextType;
-  const [shakeHand, setShakeHand] = React.useState<boolean>(false);
-  const [winner, setWinner] = React.useState<string | null>();
-
-  React.useEffect(() => {
-    if (!player1Choice || !player2Choice) return;
-
-    setShakeHand(true)
-    const winner = getWinner(player1Choice, player2Choice);
-    setTimeout(() => {
-      setShakeHand(false)
-      updateScore(winner)
-      setWinner(winner);
-    }, 1000);
-  }, [player1Choice]);
+const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
+  const { playItems, player1Choice, player2Choice, gamingMode, winner } = useContext(ScoreContext) as ScoreContextType;
 
   const renderShakeHand = (handSide: string) => {
-    if (!shakeHand) return
+    if (!startAnimation) return
 
     return (
       <div>
         <img
           className={`shake-hand-image ${handSide}`}
           src={require(`../assets/rock.png`)}
+          alt="rock"
           height="200"
           width="200"
         />
@@ -47,7 +26,7 @@ const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProp
   }
 
   const renderPlayerChoice = () => {
-    if (shakeHand) return renderShakeHand('left');
+    if (startAnimation) return renderShakeHand('left');
     const filePath = player1Choice?.filePath || playItems[0].filePath;
 
     return (
@@ -55,6 +34,7 @@ const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProp
         <img
           className={`chosen-hand-image left ${winner === "player1" ? "winner" : ""}`}
           src={require(`../assets/${filePath}`)}
+          alt={player1Choice?.item}
           height="200"
           width="200"
         />
@@ -63,7 +43,7 @@ const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProp
   }
 
   const renderComputerChoice = () => {
-    if (shakeHand) return renderShakeHand('right');
+    if (startAnimation) return renderShakeHand('right');
     const filePath = player2Choice?.filePath || playItems[0].filePath;
 
     return (
@@ -71,6 +51,7 @@ const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProp
         <img
           className={`chosen-hand-image right ${winner === "player2" ? "winner" : ""}`}
           src={require(`../assets/${filePath}`)}
+          alt={player2Choice?.item}
           height="200"
           width="200"
         />
@@ -79,9 +60,9 @@ const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProp
   }
 
   const renderWinner = () => {
-    if (!player1Choice || shakeHand) return;
+    if (!player1Choice || startAnimation || !winner) return;
 
-    let winnerText = winner === "tie" ? "It's a tie" : `${playerNames[gamingMode][winner as keyof player]} wins`;
+    let winnerText = winner === "tie" ? "It's a tie" : `${playerNames[gamingMode][winner as keyof Player]} wins`;
 
     return (
       <div className="winner-div">
@@ -89,6 +70,8 @@ const PlayingAnimation = ({ player1Choice, player2Choice }: PlayingAnimationProp
       </div>
     );
   }
+
+  if (!gamingMode) return <div>Loading...</div>
 
   return (
     <div className="playing-area-div">

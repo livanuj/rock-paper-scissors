@@ -1,50 +1,45 @@
 import React from "react";
-import { playerNames, playItems } from "../constants/playItems";
+import { playerNames, PlayItem, playItems } from "../constants/playItems";
 import { ScoreContext, ScoreContextType } from "../context/ScoreContext";
-import { randomComputerChoice } from "../helper/gamelogic";
 import PlayingAnimation from "./PlayingAnimation";
 
-interface ChoiceProps {
-  item: string,
-  wins: string[],
-  filePath: string,
-}
-
 const PlayingComponent = () => {
-  const { player1Score, player2Score, gamingMode } = React.useContext(ScoreContext) as ScoreContextType;
-  const [player1Choice, setPlayer1Choice] = React.useState<ChoiceProps | null>(null);
-  const [player2Choice, setPlayer2Choice] = React.useState<ChoiceProps | null>(null);
-  const [disableBtn, setDisableBtn] = React.useState<boolean>(false);
-
-  React.useEffect(() => {
-    if (gamingMode === 'compVsComp' && !player1Choice && !player2Choice) {
-      setPlayer1Choice(randomComputerChoice());
-      setPlayer2Choice(randomComputerChoice());
-    }
-  }, [player1Choice, player2Choice])
+  const {
+    player1Score,
+    player2Score,
+    gamingMode,
+    player1Choice,
+    winner,
+    updatePlayerChoice,
+  } = React.useContext(ScoreContext) as ScoreContextType;
+  const [startAnimation, setStartAnimation] = React.useState<boolean>(false);
 
   const handleNextRoundClick = () => {
-    setDisableBtn(true);
-    setPlayer1Choice(null);
-    setPlayer2Choice(null);
-    setTimeout(() => {
-      setDisableBtn(false)
-    }, 2000)
+    if (gamingMode === 'compVsComp')
+      startAnimatingHands();
+
+    updatePlayerChoice(null);
   }
 
-  const handlePlayerChoiceClick = (choice: ChoiceProps) => {
-    const computerChoice = randomComputerChoice();
-    setPlayer2Choice(computerChoice);
-    setPlayer1Choice(choice);
+  const handlePlayerChoiceClick = (choice: PlayItem) => {
+    startAnimatingHands()
+    updatePlayerChoice(choice)
+  }
+
+  const startAnimatingHands = () => {
+    setStartAnimation(true);
+    setTimeout(() => {
+      setStartAnimation(false)
+    }, 1000)
   }
 
   const showNextButton = () => {
     if (gamingMode === 'compVsComp') return true
 
-    return !!player1Choice
+    return !!player1Choice && !!winner
   }
 
-  const renderIcon = (index: number, playItem: any) => {
+  const renderIcon = (index: number, playItem: PlayItem) => {
     const { item, filePath } = playItem;
 
     return (
@@ -73,7 +68,7 @@ const PlayingComponent = () => {
         <button
           className="next-round-button"
           onClick={handleNextRoundClick}
-          disabled={disableBtn}
+          disabled={startAnimation}
         >
           Next Round
         </button>
@@ -82,6 +77,8 @@ const PlayingComponent = () => {
   }
 
   const renderScore = () => {
+    if (!gamingMode) return;
+
     return (
       <div className="score-div">
         <div className="score-name" style={{ color: player1Score >= player2Score ? 'green' : 'red' }}>
@@ -104,10 +101,7 @@ const PlayingComponent = () => {
   return (
     <div>
       {renderScore()}
-      <PlayingAnimation
-        player1Choice={player1Choice!}
-        player2Choice={player2Choice!}
-      />
+      <PlayingAnimation startAnimation={startAnimation} />
       <div className="selection-div">
         <span><h3>Choose Wisely</h3></span>
         {renderNextGameButton()}

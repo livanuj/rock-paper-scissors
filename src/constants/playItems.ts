@@ -1,19 +1,19 @@
-export interface playItem {
+export interface PlayItem {
   item: string;
   wins: string[];
   filePath: string;
 }
 
-export interface player {
+export interface Player {
   player1: string;
   player2: string;
 }
 
-export interface playerName {
-  [key: string]: player,
+export interface PlayerName {
+  [key: string]: Player,
 }
 
-export const playItems:playItem[] = [
+export const playItems:PlayItem[] = [
   {
     item: 'Rock',
     wins: ['Scissor'],
@@ -37,7 +37,7 @@ export const playItems:playItem[] = [
   }
 ]
 
-export const playerNames:playerName = {
+export const playerNames:PlayerName = {
   playerVsComp: {
     player1: 'Player',
     player2: 'Computer' 

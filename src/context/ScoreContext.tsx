@@ -1,57 +1,119 @@
 import React from 'react';
-import Cookies from 'js-cookie';
+import { getPlayItems, getWinner, GetWinnerProps, startNewGame } from '../helper/restApi';
+import { PlayItem } from '../constants/playItems';
+import { mockUpdateGameMode, ResponseProp } from '../helper/gamelogic';
 
-export interface ScoreContextType {
+interface ContextProps {
+  children?: React.ReactNode,
+}
+
+interface StateProps {
+  playItems: PlayItem[],
+  player1Choice: PlayItem | null,
+  player2Choice: PlayItem | null,
+  winner: string,
   player1Score: number,
   player2Score: number,
   gamingMode: string,
-  updateScore: (winner: string) => void,
-  resetScore: () => void,
-  handleGameMode: (mode: string) => void,
 }
 
-interface ContextProps {
-  children?: React.ReactNode;
-  player1ScoreProp: number,
-  player2ScoreProp: number,
-  gameMode: string,
+export interface ScoreContextType extends StateProps {
+  resetScore: () => void,
+  handleGameMode: (mode: string) => void,
+  updatePlayerChoice: (item: PlayItem | null) => void,
 }
 
 export const ScoreContext = React.createContext<ScoreContextType | null>(null);
 
-const ScoreContextProvider: React.FC<ContextProps> = ({ children, player1ScoreProp, player2ScoreProp, gameMode }) => {
-  const [player1Score, setPlayer1Score] = React.useState<number>(player1ScoreProp || 0)
-  const [player2Score, setPlayer2Score] = React.useState<number>(player2ScoreProp || 0)
-  const [gamingMode, setGamingMode] = React.useState<string>(gameMode || "playerVsComp")
+const ScoreContextProvider: React.FC<ContextProps> = ({ children }) => {
+  const [state, setState] = React.useState<StateProps>({
+    playItems: [],
+    player1Choice: null,
+    player2Choice: null,
+    winner: '',
+    player1Score: 0,
+    player2Score: 0,
+    gamingMode: 'playerVsComp',
+  })
 
   React.useEffect(() => {
-    Cookies.set('player-1-score', player1Score.toString());
-    Cookies.set('player-2-score', player2Score.toString());
-    Cookies.set('game-mode', gamingMode.toString());
-  }, [player1Score, player2Score, gamingMode])
+    async function fetchPlayItems() {
+      try {
+        const response: any = await getPlayItems();
 
-  const resetScore = () => {
-    setPlayer1Score(0);
-    setPlayer2Score(0);
+        setState((prevState) => ({
+          ...prevState,
+          playItems: response.playItems,
+          player1Score: response.player1Score,
+          player2Score: response.player2Score,
+          gamingMode: response.gameMode,
+        }))
+      } catch (err: any) {
+        console.log(err.message)
+      }
+    }
+
+    fetchPlayItems();
+  }, [])
+
+  const resetScore = async () => {
+    try {
+      const response: ResponseProp = await startNewGame();
+
+      setState((prevState) => ({
+        ...prevState,
+        player1Score: response.player1Score,
+        player2Score: response.player2Score,
+        winner: '',
+      }))
+    } catch (err: any) {
+      console.log(err.message)
+    }
   }
 
-  const handleGameMode = (mode: string) => {
-    setGamingMode(mode);
+  const handleGameMode = async (mode: string) => {
+    try {
+      const response: ResponseProp = await mockUpdateGameMode(mode);
+
+      setState((prevState) => ({
+        ...prevState,
+        gamingMode: response.gameMode,
+      }))
+    } catch (err: any) {
+      console.log(err.message)
+    }
   }
 
-  const updateScore = (winner: string) => {
-    console.log('i am here', winner)
-    if (winner === "tie") return
+  const updatePlayerChoice = async (item: PlayItem | null) => {
+    const { gamingMode } = state
+    if (!!item || gamingMode === 'compVsComp') {
+      try {
+        const payload: GetWinnerProps = { gameMode: gamingMode, playerChoice: item }
+        const response: ResponseProp = await getWinner(payload);
 
-    if (winner === "player1") {
-      setPlayer1Score(player1Score + 1)
+        setState((prevState) => ({
+          ...prevState,
+          player1Choice: response.player1Choice,
+          player2Choice: response.player2Choice,
+          winner: response.winner,
+          player1Score: response.player1Score,
+          player2Score: response.player2Score,
+        }))
+      } catch (err: any) {
+        console.log(err.message)
+      }
     } else {
-      setPlayer2Score(player2Score + 1)
+      setState((prevState) => ({
+        ...prevState,
+        player1Choice: null,
+        player2Choice: null,
+        winner: '',
+      }))
     }
   }
 
   return (
-    <ScoreContext.Provider value={{ player1Score, player2Score, updateScore, resetScore, gamingMode, handleGameMode }}>
+    <ScoreContext.Provider value={{ ...state, resetScore, handleGameMode, updatePlayerChoice }}>
       {children}
     </ScoreContext.Provider>
   )
