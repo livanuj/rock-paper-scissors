@@ -45,12 +45,14 @@ const HomeScreen = () => {
     return (
       <div className='home-screen-menu'>
         <span
+          data-testid="player-vs-computer"
           className='clickable-span'
           onClick={() => handleGameModeClick('playerVsComp')}
         >
           <h2>Player Vs Computer</h2>
         </span>
         <span
+          data-testid="computer-vs-computer"
           className='clickable-span'
           onClick={() => handleGameModeClick('compVsComp')}
         >
@@ -65,6 +67,7 @@ const HomeScreen = () => {
       <div className='home-screen-menu'>
         {renderContinueMenu()}
         <span
+          data-testid="new-game-span"
           className='clickable-span'
           onClick={handleNewGameClick}
         >
@@ -83,12 +86,12 @@ const HomeScreen = () => {
   }
 
   return (
-    <div>
+    <div data-testid="home-screen">
       <span
         className='clickable-span'
         onClick={() => setShowHomePage(true)}
       >
-        <h1>Rock Paper Sissor</h1>
+        <h1>Rock Paper Scissor</h1>
       </span>
       {routeLogic()}
     </div>

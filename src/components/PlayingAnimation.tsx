@@ -27,7 +27,8 @@ const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
 
   const renderPlayerChoice = () => {
     if (startAnimation) return renderShakeHand('left');
-    const filePath = player1Choice?.filePath || playItems[0].filePath;
+
+    const filePath = player1Choice?.filePath || "logo.svg";
 
     return (
       <div>
@@ -44,7 +45,8 @@ const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
 
   const renderComputerChoice = () => {
     if (startAnimation) return renderShakeHand('right');
-    const filePath = player2Choice?.filePath || playItems[0].filePath;
+
+    const filePath = player2Choice?.filePath || "logo.svg";
 
     return (
       <div>
@@ -74,7 +76,10 @@ const PlayingAnimation = ({ startAnimation }: PlayingAnimationProps) => {
   if (!gamingMode) return <div>Loading...</div>
 
   return (
-    <div className="playing-area-div">
+    <div
+      data-testid="playing-area"
+      className="playing-area-div"
+    >
       {renderWinner()}
       <div>
         <span><h2>{playerNames[gamingMode].player1} Chose</h2></span>

@@ -99,7 +99,7 @@ const PlayingComponent = () => {
   }
 
   return (
-    <div>
+    <div data-testid="playing-component">
       {renderScore()}
       <PlayingAnimation startAnimation={startAnimation} />
       <div className="selection-div">
