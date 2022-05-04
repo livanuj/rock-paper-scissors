@@ -1,6 +1,6 @@
 # Read Me
 
-## start by cloning the repository
+## Start by cloning the repository
 
 `git clone git@github.com:livanuj/rock-paper-scissors.git`
 
