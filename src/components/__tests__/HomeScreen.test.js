@@ -1,4 +1,3 @@
-import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
 import HomeScreen from '../HomeScreen';
 import ScoreContextProvider from '../../context/ScoreContext';
@@ -12,7 +11,7 @@ test('renders Home Screen', () => {
   const divElement = screen.getByTestId("home-screen"); 
   expect(divElement).toHaveTextContent("Rock Paper Scissor");
 });
-   
+
 test('clicks New Game', () => {
   render(
     <ScoreContextProvider>
