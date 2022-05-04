@@ -86,7 +86,8 @@ Scoring adds 1 point to the winning player. If it's a tie. No points will be add
 Score and game mode are stored in Cookies.
 
 ## Game Logic
-No API is used, however the game is developed while mocking the API in such a way that adding the endpoints in specific functions in file\ `src/helper/restApi.ts` will work.
+No API is used, however the game is developed while mocking the API in such a way that adding the endpoints in specific functions in file\
+`src/helper/restApi.ts` will work.
 
 # rock-paper-scissors
 ## Please feel free to play around with it...
