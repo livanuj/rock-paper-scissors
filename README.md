@@ -1,5 +1,8 @@
 # Read Me
 
+## Play the game here
+https://lucent-rugelach-8e2160.netlify.app/
+
 ## Start by cloning the repository
 
 `git clone git@github.com:livanuj/rock-paper-scissors.git`
