@@ -79,7 +79,7 @@ const getValueFromCookies = (name: string):string => {
 }
 
 const updateCookies = (player: string, score: number | string) => {
-  Cookies.set(COOKIES_MAPPER[player], score.toString())
+  Cookies.set(COOKIES_MAPPER[player], score.toString(), { sameSite: 'None', secure: true })
 }
 
 const updateScore = (winner: string): void => {
